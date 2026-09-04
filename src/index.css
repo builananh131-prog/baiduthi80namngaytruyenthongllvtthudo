@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Merriweather', Georgia, serif;
+  }
+  
+  h1, h2, h3, h4, h5, h6, .font-heading, button, nav, input, select {
+    font-family: 'Montserrat', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-size: 11pt !important;
+    line-height: 1.6 !important;
+  }
+  .print-page-break {
+    page-break-before: always;
+  }
+  .print-card {
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin-bottom: 24pt !important;
+    page-break-inside: avoid;
+  }
+}
