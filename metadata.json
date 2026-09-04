@@ -2,5 +2,7 @@
   "name": "Tìm Hiểu Lịch Sử 80 Năm Ngày Truyền Thống Lực Lượng Vũ Trang Thủ Đô",
   "description": "Trang web bài dự thi tìm hiểu lịch sử 80 năm Ngày truyền thống Lực lượng vũ trang Thủ đô (1946 - 2026), tích hợp mã QR podcast, video ca khúc và toàn văn 5 câu hỏi.",
   "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
 }

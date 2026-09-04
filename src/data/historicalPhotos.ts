@@ -1,6 +1,7 @@
 export interface HistoricalPhoto {
   id: number;
   fileName: string;
+  defaultUrl?: string;
   title: string;
   caption: string;
   period: string;
@@ -12,6 +13,7 @@ export const HISTORICAL_PHOTOS: HistoricalPhoto[] = [
   {
     id: 1,
     fileName: '1.jpg',
+    defaultUrl: 'https://i.postimg.cc/L6q9fVxy/19.jpg',
     title: 'Bác Hồ với cán bộ, chiến sĩ Lực lượng vũ trang Thủ đô',
     caption: 'Chủ tịch Hồ Chí Minh cùng các đồng chí lãnh đạo quân sự chỉ đạo, động viên cán bộ chiến sĩ LLVT Thủ đô trong những ngày đầu thành lập và chuẩn bị kháng chiến.',
     period: 'Mốc khởi nguồn & Kháng chiến toàn quốc',

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, ChangeEvent, DragEvent } from 'react';
+import { useState, useEffect, useRef, ChangeEvent } from 'react';
 import { 
   Images, 
   UploadCloud, 
@@ -22,10 +22,8 @@ export default function HistoricalPhotoGallery() {
   const [photosMap, setPhotosMap] = useState<Record<string, string>>({});
   const [selectedPhoto, setSelectedPhoto] = useState<HistoricalPhoto | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [isDragOver, setIsDragOver] = useState(false);
   const [copiedId, setCopiedId] = useState<number | null>(null);
   const [viewLayout, setViewLayout] = useState<'grid' | 'detailed'>('grid');
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const singleFileInputRef = useRef<HTMLInputElement>(null);
   const targetPhotoForSingleUpload = useRef<HistoricalPhoto | null>(null);
 
@@ -35,53 +33,6 @@ export default function HistoricalPhotoGallery() {
       setPhotosMap((prev) => ({ ...prev, ...map }));
     });
   }, []);
-
-  // Handle batch file upload (multi-file or drag and drop)
-  const processUploadedFiles = async (files: FileList | File[]) => {
-    const fileArray = Array.from(files);
-    const newMap: Record<string, string> = {};
-
-    for (const file of fileArray) {
-      const lowerName = file.name.toLowerCase();
-      // Match by exact filename or match pattern like "1.jpg", "2.png"
-      let matchedTarget: HistoricalPhoto | undefined = HISTORICAL_PHOTOS.find(
-        (p) => p.fileName.toLowerCase() === lowerName
-      );
-
-      // If filename is something like "image-1.jpg" or "photo1.jpg" or "1 (1).jpg"
-      if (!matchedTarget) {
-        const numMatch = lowerName.match(/\b(\d{1,2})\b/);
-        if (numMatch) {
-          const num = parseInt(numMatch[1], 10);
-          matchedTarget = HISTORICAL_PHOTOS.find((p) => p.id === num);
-        }
-      }
-
-      if (matchedTarget) {
-        await storePhoto(matchedTarget.fileName, file);
-        const objUrl = URL.createObjectURL(file);
-        newMap[matchedTarget.fileName] = objUrl;
-      }
-    }
-
-    // If filenames didn't contain numbers and user just uploaded in order:
-    if (Object.keys(newMap).length === 0 && fileArray.length > 0) {
-      for (let i = 0; i < Math.min(fileArray.length, HISTORICAL_PHOTOS.length); i++) {
-        const target = HISTORICAL_PHOTOS[i];
-        const file = fileArray[i];
-        await storePhoto(target.fileName, file);
-        newMap[target.fileName] = URL.createObjectURL(file);
-      }
-    }
-
-    setPhotosMap((prev) => ({ ...prev, ...newMap }));
-  };
-
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      processUploadedFiles(e.target.files);
-    }
-  };
 
   const handleSingleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0 && targetPhotoForSingleUpload.current) {
@@ -99,25 +50,6 @@ export default function HistoricalPhotoGallery() {
     if (singleFileInputRef.current) {
       singleFileInputRef.current.value = '';
       singleFileInputRef.current.click();
-    }
-  };
-
-  // Drag and drop handlers
-  const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    setIsDragOver(true);
-  };
-
-  const handleDragLeave = (e: DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    setIsDragOver(false);
-  };
-
-  const handleDrop = (e: DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    setIsDragOver(false);
-    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      processUploadedFiles(e.dataTransfer.files);
     }
   };
 
@@ -146,23 +78,16 @@ export default function HistoricalPhotoGallery() {
     if (photosMap[photo.fileName]) {
       return photosMap[photo.fileName];
     }
+    if (photo.defaultUrl) {
+      return photo.defaultUrl;
+    }
     // Try serving from public folder
     return `/images/${photo.fileName}`;
   };
 
-  const loadedCount = Object.keys(photosMap).length;
-
   return (
     <section id="historical-photos" className="mb-14 scroll-mt-24">
-      {/* Hidden file inputs */}
-      <input
-        type="file"
-        ref={fileInputRef}
-        onChange={handleFileChange}
-        multiple
-        accept="image/*"
-        className="hidden"
-      />
+      {/* Hidden file input for individual photo update */}
       <input
         type="file"
         ref={singleFileInputRef}
@@ -190,16 +115,6 @@ export default function HistoricalPhotoGallery() {
 
         {/* Action Controls */}
         <div className="no-print flex items-center gap-2 shrink-0">
-          <button
-            type="button"
-            onClick={() => fileInputRef.current?.click()}
-            className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-[#b71c1c] hover:bg-[#9a1414] text-white shadow-sm transition-colors cursor-pointer"
-            title="Tải hoặc thay thế 18 file ảnh gốc từ máy tính"
-          >
-            <UploadCloud className="w-4 h-4" />
-            <span>Tải 18 ảnh gốc</span>
-          </button>
-
           <div className="flex items-center bg-stone-100 p-0.5 rounded-lg border border-stone-200 text-xs">
             <button
               type="button"
@@ -220,46 +135,6 @@ export default function HistoricalPhotoGallery() {
               Chi tiết
             </button>
           </div>
-        </div>
-      </div>
-
-      {/* Drag & Drop Notice Banner */}
-      <div
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
-        onDrop={handleDrop}
-        className={`no-print mb-6 p-4 rounded-2xl border-2 border-dashed transition-all ${
-          isDragOver
-            ? 'border-red-500 bg-red-50/80 scale-[1.01]'
-            : 'border-stone-300 bg-stone-50/70 hover:bg-stone-50'
-        }`}
-      >
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-amber-100 text-amber-900 flex items-center justify-center shrink-0">
-              <UploadCloud className="w-5 h-5 text-amber-700" />
-            </div>
-            <div>
-              <p className="text-xs sm:text-sm font-bold text-stone-900">
-                Kéo & thả cả 18 file ảnh gốc (1.jpg đến 18.jpg) vào đây bất cứ lúc nào
-              </p>
-              <p className="text-xs text-stone-500 mt-0.5">
-                Ứng dụng tự động lưu trữ nguyên bản file ảnh gốc trong trình duyệt, không dùng và không sửa đổi bằng AI.
-                {loadedCount > 0 && (
-                  <span className="ml-2 font-semibold text-emerald-700">
-                    (Đã nhận diện: {loadedCount}/18 file ảnh)
-                  </span>
-                )}
-              </p>
-            </div>
-          </div>
-          <button
-            type="button"
-            onClick={() => fileInputRef.current?.click()}
-            className="text-xs font-semibold text-red-700 hover:text-red-900 underline cursor-pointer"
-          >
-            Hoặc chọn file từ máy
-          </button>
         </div>
       </div>
 
@@ -297,9 +172,10 @@ export default function HistoricalPhotoGallery() {
                     alt={photo.title}
                     referrerPolicy="no-referrer"
                     onError={(e) => {
-                      // If /images/1.jpg fails, try fallback to root /1.jpg
                       const target = e.currentTarget;
-                      if (!target.src.includes(`/${photo.fileName}`)) {
+                      if (photo.defaultUrl && target.src !== photo.defaultUrl) {
+                        target.src = photo.defaultUrl;
+                      } else if (!target.src.includes(`/${photo.fileName}`)) {
                         target.src = `/${photo.fileName}`;
                       }
                     }}
