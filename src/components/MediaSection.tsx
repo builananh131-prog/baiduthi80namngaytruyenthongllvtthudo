@@ -1,8 +1,7 @@
 import { useState } from 'react';
-import { Music, Radio, Users, ChevronDown, ChevronUp, FileText, CheckCircle2, Film, Edit3 } from 'lucide-react';
+import { Music, Radio, Users, ChevronDown, ChevronUp, FileText, CheckCircle2, Edit3 } from 'lucide-react';
 import { CONTEST_INFO, PODCAST_GUESTS } from '../data/contestData';
 import QRCodeDisplay from './QRCodeDisplay';
-import AudioPlayerWidget from './AudioPlayerWidget';
 
 export default function MediaSection() {
   const [songQrUrl, setSongQrUrl] = useState(CONTEST_INFO.song.defaultQrUrl);
@@ -10,7 +9,6 @@ export default function MediaSection() {
   const [showLyrics, setShowLyrics] = useState(false);
   const [showGuestsFull, setShowGuestsFull] = useState(false);
   const [isEditingLinks, setIsEditingLinks] = useState(false);
-  const [mediaMode, setMediaMode] = useState<'video' | 'audio'>('video');
 
   return (
     <section id="media-section" className="mb-12 scroll-mt-24">
@@ -96,55 +94,25 @@ export default function MediaSection() {
               </div>
             </div>
 
-            {/* Video / Audio Mode Switcher */}
-            <div className="no-print mt-4 flex items-center justify-between bg-stone-100 p-1 rounded-lg">
-              <button
-                type="button"
-                onClick={() => setMediaMode('video')}
-                className={`flex-1 py-1 px-2 rounded text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors ${
-                  mediaMode === 'video'
-                    ? 'bg-white text-red-900 shadow-xs'
-                    : 'text-stone-600 hover:text-stone-900'
-                }`}
-              >
-                <Film className="w-3.5 h-3.5" />
-                <span>Khung Video</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setMediaMode('audio')}
-                className={`flex-1 py-1 px-2 rounded text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors ${
-                  mediaMode === 'audio'
-                    ? 'bg-white text-red-900 shadow-xs'
-                    : 'text-stone-600 hover:text-stone-900'
-                }`}
-              >
-                <Music className="w-3.5 h-3.5" />
-                <span>Trình phát Audio</span>
-              </button>
-            </div>
-
             {/* Video preview / Simulated Video Stage */}
-            {mediaMode === 'video' ? (
-              <div className="relative mt-4 aspect-video bg-stone-950 rounded-xl overflow-hidden shadow-inner flex flex-col items-center justify-center text-center p-4 border border-stone-800">
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent pointer-events-none" />
-                <div className="relative z-10 space-y-2">
-                  <div className="w-12 h-12 mx-auto rounded-full bg-red-600/90 hover:bg-red-500 text-white flex items-center justify-center shadow-lg transition-transform hover:scale-105 cursor-pointer">
-                    <Music className="w-6 h-6 ml-0.5" />
-                  </div>
-                  <h4 className="text-sm font-bold text-amber-300 font-heading">
-                    {CONTEST_INFO.song.title}
-                  </h4>
-                  <p className="text-[11px] text-stone-300 max-w-xs mx-auto">
-                    Kỷ niệm 80 năm Ngày truyền thống LLVT Thủ đô Hà Nội
-                  </p>
+            <div className="relative mt-4 aspect-video bg-stone-950 rounded-xl overflow-hidden shadow-inner flex flex-col items-center justify-center text-center p-4 border border-stone-800">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent pointer-events-none" />
+              <div className="relative z-10 space-y-2">
+                <div className="w-12 h-12 mx-auto rounded-full bg-red-600/90 hover:bg-red-500 text-white flex items-center justify-center shadow-lg transition-transform hover:scale-105 cursor-pointer">
+                  <Music className="w-6 h-6 ml-0.5" />
                 </div>
-                <div className="absolute bottom-2 left-3 right-3 flex items-center justify-between text-[10px] text-stone-400 font-mono">
-                  <span>HD 1080p</span>
-                  <span>Stereo High Quality</span>
-                </div>
+                <h4 className="text-sm font-bold text-amber-300 font-heading">
+                  {CONTEST_INFO.song.title}
+                </h4>
+                <p className="text-[11px] text-stone-300 max-w-xs mx-auto">
+                  Kỷ niệm 80 năm Ngày truyền thống LLVT Thủ đô Hà Nội
+                </p>
               </div>
-            ) : null}
+              <div className="absolute bottom-2 left-3 right-3 flex items-center justify-between text-[10px] text-stone-400 font-mono">
+                <span>HD 1080p</span>
+                <span>Stereo High Quality</span>
+              </div>
+            </div>
 
             {/* QR Code */}
             <div className="mt-4">
@@ -184,16 +152,6 @@ export default function MediaSection() {
               )}
             </div>
           </div>
-
-          {/* Interactive Audio Player */}
-          <div className="mt-5 pt-4 border-t border-stone-100">
-            <AudioPlayerWidget
-              title={CONTEST_INFO.song.title}
-              subtitle="Giai điệu quân hành hào hùng"
-              defaultDurationSeconds={CONTEST_INFO.song.durationSeconds || 255}
-              type="song"
-            />
-          </div>
         </div>
 
         {/* CARD 2: PODCAST & QR */}
@@ -206,7 +164,7 @@ export default function MediaSection() {
               </div>
               <div className="flex-1 min-w-0">
                 <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-800">
-                  Mục 1 • Podcast Phát Thanh Đặc Biệt
+                  Mục 2 • Podcast Phát Thanh Đặc Biệt
                 </span>
                 <h3 className="text-base sm:text-lg font-bold font-heading text-stone-900 leading-snug">
                   "{CONTEST_INFO.podcast.title}"
@@ -251,16 +209,6 @@ export default function MediaSection() {
             <p className="text-xs text-stone-600 mt-3 leading-relaxed">
               {CONTEST_INFO.podcast.description}
             </p>
-          </div>
-
-          {/* Interactive Audio Player */}
-          <div className="mt-5 pt-4 border-t border-stone-100">
-            <AudioPlayerWidget
-              title={CONTEST_INFO.podcast.title}
-              subtitle="Giọng đọc truyền cảm & phỏng vấn thực địa"
-              defaultDurationSeconds={677}
-              type="podcast"
-            />
           </div>
         </div>
 
