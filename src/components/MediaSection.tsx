@@ -141,7 +141,7 @@ export default function MediaSection() {
                 </div>
                 <div className="absolute bottom-2 left-3 right-3 flex items-center justify-between text-[10px] text-stone-400 font-mono">
                   <span>HD 1080p</span>
-                  <span>Thời lượng: 03:30</span>
+                  <span>Stereo High Quality</span>
                 </div>
               </div>
             ) : null}
@@ -150,8 +150,9 @@ export default function MediaSection() {
             <div className="mt-4">
               <QRCodeDisplay
                 data={songQrUrl}
-                label="Quét mã QR để xem video ca khúc chính thức"
+                label="Quét mã QR để xem video ca khúc 'Tự hào người chiến sĩ Thủ đô'"
                 downloadFilename="qr-video-tu-hao-nguoi-chien-si-thu-do.png"
+                storageKey="song"
               />
             </div>
 
@@ -172,7 +173,12 @@ export default function MediaSection() {
               {showLyrics && (
                 <div className="mt-2 p-3.5 bg-amber-50/50 rounded-lg border border-amber-200/60 text-xs italic text-stone-800 space-y-1 leading-relaxed">
                   {CONTEST_INFO.song.lyrics.map((line, idx) => (
-                    <p key={idx}>{line}</p>
+                    <p
+                      key={idx}
+                      className={line.startsWith('Đk:') ? 'font-bold not-italic text-red-900 pt-1.5' : ''}
+                    >
+                      {line}
+                    </p>
                   ))}
                 </div>
               )}
@@ -184,7 +190,7 @@ export default function MediaSection() {
             <AudioPlayerWidget
               title={CONTEST_INFO.song.title}
               subtitle="Giai điệu quân hành hào hùng"
-              defaultDurationSeconds={210}
+              defaultDurationSeconds={CONTEST_INFO.song.durationSeconds || 255}
               type="song"
             />
           </div>
@@ -206,7 +212,7 @@ export default function MediaSection() {
                   "{CONTEST_INFO.podcast.title}"
                 </h3>
                 <p className="text-xs text-stone-500 mt-0.5">
-                  Thực hiện: <strong>{CONTEST_INFO.contestant.name}</strong> ({CONTEST_INFO.contestant.organization})
+                  Thực hiện: <strong>{CONTEST_INFO.contestant.name}</strong>
                 </p>
               </div>
             </div>
@@ -222,9 +228,9 @@ export default function MediaSection() {
                     Chuyên trang phát thanh số
                   </div>
                   <h4 className="text-xs sm:text-sm font-bold font-heading text-white">
-                    Đối thoại 3 thế hệ chiến sĩ Thủ đô
+                    {CONTEST_INFO.podcast.title}
                   </h4>
-                  <p className="text-[11px] text-stone-300">
+                  <p className="text-[11px] text-emerald-200/90 font-medium">
                     Thời lượng phát thanh: {CONTEST_INFO.podcast.duration}
                   </p>
                 </div>
@@ -235,8 +241,9 @@ export default function MediaSection() {
             <div className="mt-4">
               <QRCodeDisplay
                 data={podcastQrUrl}
-                label="Quét mã QR để lắng nghe trọn vẹn tập Podcast"
+                label="Quét mã QR để lắng nghe trọn vẹn tập Podcast phát thanh"
                 downloadFilename="qr-podcast-llvt-thudo.png"
+                storageKey="podcast"
               />
             </div>
 
@@ -250,8 +257,8 @@ export default function MediaSection() {
           <div className="mt-5 pt-4 border-t border-stone-100">
             <AudioPlayerWidget
               title={CONTEST_INFO.podcast.title}
-              subtitle="Giọng đọc truyền cảm & phỏng vấn độc quyền"
-              defaultDurationSeconds={1485}
+              subtitle="Giọng đọc truyền cảm & phỏng vấn thực địa"
+              defaultDurationSeconds={677}
               type="podcast"
             />
           </div>
@@ -279,7 +286,7 @@ export default function MediaSection() {
         </div>
 
         <p className="text-xs sm:text-sm text-stone-700 mt-2 leading-relaxed">
-          <strong>Sản phẩm đa phương tiện:</strong> Do sinh viên <strong>Bùi Thị Diễm</strong> (Khoa Viết văn - Báo chí, Trường Đại học Văn hóa Hà Nội) trực tiếp xây dựng đề cương kịch bản, dẫn chuyện, thu âm, phỏng vấn thực địa, biên tập và dựng hậu kỳ.
+          <strong>Sản phẩm đa phương tiện:</strong> Do sinh viên <strong>Bùi Thị Diễm</strong> trực tiếp xây dựng đề cương kịch bản, dẫn chuyện, thu âm, phỏng vấn thực địa, biên tập và dựng hậu kỳ.
         </p>
 
         {/* Guest List Grid */}

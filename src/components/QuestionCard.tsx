@@ -6,9 +6,10 @@ interface QuestionCardProps {
   key?: string;
   question: QuestionItem;
   fontSize: number;
+  fontStyle?: 'sans' | 'serif';
 }
 
-export default function QuestionCard({ question, fontSize }: QuestionCardProps) {
+export default function QuestionCard({ question, fontSize, fontStyle = 'sans' }: QuestionCardProps) {
   const [copied, setCopied] = useState(false);
   const [isRead, setIsRead] = useState(false);
 
@@ -36,7 +37,7 @@ export default function QuestionCard({ question, fontSize }: QuestionCardProps) 
   return (
     <article
       id={question.id}
-      className="print-card scroll-mt-24 mb-10 bg-white rounded-2xl p-6 sm:p-10 border border-stone-200 shadow-sm transition-shadow hover:shadow-md"
+      className="print-card scroll-mt-24 mb-12 bg-white rounded-2xl p-6 sm:p-10 border border-stone-200 shadow-sm transition-shadow hover:shadow-md"
     >
       {/* Header of Question */}
       <div className="pb-5 mb-6 border-b-2 border-stone-100 flex flex-col sm:flex-row sm:items-start justify-between gap-4">
@@ -66,6 +67,7 @@ export default function QuestionCard({ question, fontSize }: QuestionCardProps) 
         <div className="no-print flex items-center gap-1.5 shrink-0 self-start">
           <button
             type="button"
+            id={`btn-read-${question.id}`}
             onClick={() => setIsRead(!isRead)}
             title={isRead ? 'Đánh dấu chưa đọc' : 'Đánh dấu đã đọc'}
             className={`p-2 rounded-lg border text-xs font-semibold flex items-center gap-1 transition-colors cursor-pointer ${
@@ -79,34 +81,37 @@ export default function QuestionCard({ question, fontSize }: QuestionCardProps) 
 
           <button
             type="button"
+            id={`btn-copy-${question.id}`}
             onClick={handleCopy}
-            title="Sao chép nội dung câu hỏi và câu trả lời"
-            className="p-2 rounded-lg border border-stone-200 bg-stone-50 hover:bg-stone-100 text-stone-600 text-xs font-semibold flex items-center gap-1 transition-colors cursor-pointer"
+            title="Sao chép toàn bộ nội dung câu trả lời"
+            className="p-2 rounded-lg border border-stone-200 bg-stone-50 text-stone-600 hover:bg-stone-100 text-xs font-semibold flex items-center gap-1 transition-colors cursor-pointer"
           >
             {copied ? (
               <>
                 <Check className="w-3.5 h-3.5 text-emerald-600" />
-                <span className="text-[11px] text-emerald-700">Đã chép</span>
+                <span className="text-[11px] text-emerald-600 font-medium">Đã chép</span>
               </>
             ) : (
               <>
                 <Copy className="w-3.5 h-3.5" />
-                <span className="text-[11px] hidden sm:inline">Sao chép</span>
+                <span className="hidden md:inline text-[11px]">Sao chép</span>
               </>
             )}
           </button>
         </div>
       </div>
 
-      {/* Answer Body with customizable font size */}
+      {/* Answer Content */}
       <div
-        className="text-stone-800 space-y-6 leading-relaxed"
+        className={`space-y-6 text-stone-800 leading-relaxed ${
+          fontStyle === 'serif' ? 'font-reading-serif' : 'font-reading-sans'
+        }`}
         style={{ fontSize: `${fontSize}px` }}
       >
-        {question.sections.map((section, idx) => (
-          <div key={idx} className="space-y-4">
+        {question.sections.map((section, sIdx) => (
+          <div key={sIdx} className="space-y-3">
             {section.heading && (
-              <h3 className="text-base sm:text-lg font-bold font-heading text-[#7f0000] border-l-4 border-amber-400 pl-3 pt-0.5 mt-6 mb-2">
+              <h3 className="text-base sm:text-lg md:text-xl font-bold font-heading text-red-900 border-l-3 border-red-700 pl-3 pt-0.5">
                 {section.heading}
               </h3>
             )}
@@ -118,12 +123,12 @@ export default function QuestionCard({ question, fontSize }: QuestionCardProps) 
             )}
 
             {section.quote && (
-              <blockquote className="my-4 p-4 sm:p-5 rounded-r-xl bg-emerald-50/70 border-l-4 border-emerald-700 text-stone-800 italic shadow-2xs">
-                <p className="font-serif text-emerald-950 font-medium leading-relaxed">
+              <blockquote className="my-4 p-4 sm:p-5 rounded-r-xl bg-emerald-50/70 border-l-4 border-emerald-700 text-stone-800 shadow-2xs">
+                <p className="font-quote text-emerald-950 font-medium leading-relaxed italic text-base sm:text-lg">
                   "{section.quote.text}"
                 </p>
                 {section.quote.author && (
-                  <footer className="mt-2 text-right text-xs sm:text-sm font-sans font-semibold text-emerald-800 not-italic">
+                  <footer className="mt-2 text-right text-xs sm:text-sm font-heading font-semibold text-emerald-800 not-italic">
                     — {section.quote.author}
                   </footer>
                 )}

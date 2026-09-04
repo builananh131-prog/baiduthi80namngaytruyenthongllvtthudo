@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 import Header from './components/Header';
 import StickyNav from './components/StickyNav';
 import MediaSection from './components/MediaSection';
+import DevelopmentDiagram from './components/DevelopmentDiagram';
+import HistoricalPhotoGallery from './components/HistoricalPhotoGallery';
+import MartyrSearchSection from './components/MartyrSearchSection';
 import QuestionCard from './components/QuestionCard';
 import SearchModal from './components/SearchModal';
 import Footer from './components/Footer';
@@ -9,6 +12,7 @@ import { CONTEST_QUESTIONS } from './data/contestData';
 
 export default function App() {
   const [fontSize, setFontSize] = useState<number>(16.5);
+  const [fontStyle, setFontStyle] = useState<'sans' | 'serif'>('sans');
   const [activeSection, setActiveSection] = useState<string>('media-section');
   const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
 
@@ -17,6 +21,10 @@ export default function App() {
       const next = prev + delta * 1.5;
       return Math.min(22, Math.max(14, next));
     });
+  };
+
+  const handleToggleFontStyle = () => {
+    setFontStyle((prev) => (prev === 'sans' ? 'serif' : 'sans'));
   };
 
   const handleSelectSearchResult = (questionId: string) => {
@@ -35,7 +43,7 @@ export default function App() {
   // Scroll spy to update active nav link
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['media-section', 'cau-1', 'cau-2', 'cau-3', 'cau-4', 'cau-5'];
+      const sections = ['media-section', 'development-diagram', 'historical-photos', 'martyr-search-section', 'cau-1', 'cau-2', 'cau-3', 'cau-4', 'cau-5'];
       const scrollPos = window.scrollY + 160;
 
       for (let i = sections.length - 1; i >= 0; i--) {
@@ -63,6 +71,8 @@ export default function App() {
         onFontSizeChange={handleFontSizeChange}
         onSearchClick={() => setIsSearchOpen(true)}
         activeSection={activeSection}
+        fontStyle={fontStyle}
+        onToggleFontStyle={handleToggleFontStyle}
       />
 
       {/* Main Container */}
@@ -71,8 +81,17 @@ export default function App() {
         {/* Phần 1: Mã QR của Podcast & Phần 2: Video bài hát */}
         <MediaSection />
 
+        {/* Sơ đồ tiến trình phát triển của LLVT Thủ đô từ 1946 đến nay */}
+        <DevelopmentDiagram />
+
+        {/* 18 Bức ảnh tư liệu gốc trước các câu hỏi */}
+        <HistoricalPhotoGallery />
+
+        {/* Chiến dịch 500 ngày đêm: Cuộc hành quân trong thời bình tìm kiếm, xác định danh tính liệt sĩ */}
+        <MartyrSearchSection />
+
         {/* Phần 3: Toàn văn 5 câu hỏi bài dự thi */}
-        <div className="mt-8">
+        <div className="mt-12">
           <div className="mb-6 pb-2 border-b-2 border-stone-200 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <span className="w-2.5 h-6 bg-[#b71c1c] rounded-full" />
@@ -91,6 +110,7 @@ export default function App() {
                 key={question.id}
                 question={question}
                 fontSize={fontSize}
+                fontStyle={fontStyle}
               />
             ))}
           </div>

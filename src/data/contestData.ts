@@ -5,7 +5,7 @@ export const CONTEST_INFO = {
   titleLine1: "Tìm Hiểu Lịch Sử 80 Năm Ngày Truyền Thống",
   titleLine2: "Lực Lượng Vũ Trang Thủ Đô",
   subPeriod: "(19/10/1946 – 19/10/2026)",
-  tag: "BÀI DỰ THI CHÍNH THỨC",
+  tag: "BÀI DỰ THI",
   contestant: {
     name: "Bùi Thị Diễm",
     birthYear: "2005",
@@ -16,17 +16,26 @@ export const CONTEST_INFO = {
     title: "Tự Hào Người Chiến Sĩ Thủ Đô",
     composer: "Nguyễn Tú",
     performer: "Tốp nam BĐ 15",
+    duration: "4 phút 15 giây",
+    durationSeconds: 255,
     defaultQrUrl: "https://youtu.be/TuHaoNguoiChienSiThuDo",
     description: "Ca khúc truyền thống ca ngợi khí thế hào hùng, phẩm chất kiên trung của người chiến sĩ Thủ đô qua các thời kỳ lịch sử.",
     lyrics: [
-      "Hà Nội ơi! Tiếng súng năm xưa vẫn còn vang vọng",
-      "Sáu mươi ngày đêm khói lửa ngút trời",
-      "Lời thề quyết tử Tổ quốc quyết sinh",
-      "Những chàng trai Hà Nội bước vào trận đánh...",
-      "Tự hào thay người chiến sĩ Thủ đô!",
-      "Nòng súng canh giữ trời mây Thăng Long ngàn năm",
-      "Từ Ba Đình lịch sử đến nhịp cầu Long Biên",
-      "Mãi xứng danh Bộ đội Cụ Hồ - Người chiến sĩ Thủ đô anh hùng!"
+      "Trập trùng những bước chân xuyên qua đêm thâu",
+      "Dưới mưa lạnh, sông sâu",
+      "Bước chân quen, tạm rời xa Thành phố",
+      "Sáu mươi ngày đêm kiên cường bám trụ",
+      "Đập tan quân thù, đốt cháy \"pháo đài bay\"",
+      "Sẵng sàng xung phong chúng tôi quyết tử",
+      "Quên thân mình để Tổ quốc quyết sinh...",
+      "Đk:",
+      "Nguyện vì nước... người chiến sĩ Tự vệ Thành",
+      "Truyền thống năm xưa vẫn vang vọng mãi",
+      "Sóng lũ cuộn trào, mưa bom bão đạn nào có xá chi...",
+      "Lời của Bác... người chiến sĩ Thủ đô khắc ghi",
+      "Đoàn kết, vững tin một lòng theo Đảng",
+      "Mãi luôn tự hào chúng tôi hát vang bài ca chiến sĩ...",
+      "Bộ Tư lệnh Thủ đô anh hùng./."
     ]
   },
   podcast: {
@@ -34,7 +43,7 @@ export const CONTEST_INFO = {
     producer: "Bùi Thị Diễm (Khoa Viết văn - Báo chí, ĐH Văn hoá Hà Nội)",
     defaultQrUrl: "https://spotify.com/podcast/80nam-llvt-thudo-hanoi",
     description: "Tập Podcast đặc biệt kết nối các thế hệ nhân chứng lịch sử, lãnh đạo, nhà báo quân đội và thế hệ trẻ về hành trình 80 năm anh hùng của LLVT Thủ đô.",
-    duration: "24 phút 45 giây"
+    duration: "11 phút 17 giây"
   }
 };
 

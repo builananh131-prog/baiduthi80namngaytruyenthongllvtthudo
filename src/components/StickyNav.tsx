@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
-import { Printer, ZoomIn, ZoomOut, Search, Volume2 } from 'lucide-react';
+import { Printer, ZoomIn, ZoomOut, Search, Volume2, Type } from 'lucide-react';
 
 interface StickyNavProps {
   fontSize: number;
   onFontSizeChange: (delta: number) => void;
   onSearchClick: () => void;
   activeSection: string;
+  fontStyle?: 'sans' | 'serif';
+  onToggleFontStyle?: () => void;
 }
 
 export default function StickyNav({
@@ -13,6 +15,8 @@ export default function StickyNav({
   onFontSizeChange,
   onSearchClick,
   activeSection,
+  fontStyle = 'sans',
+  onToggleFontStyle,
 }: StickyNavProps) {
   const [scrollProgress, setScrollProgress] = useState(0);
 
@@ -31,6 +35,9 @@ export default function StickyNav({
 
   const navItems = [
     { id: 'media-section', label: '🎙️ Đa phương tiện & QR' },
+    { id: 'development-diagram', label: '🏛️ Sơ đồ phát triển' },
+    { id: 'historical-photos', label: '📷 18 Ảnh tư liệu' },
+    { id: 'martyr-search-section', label: '🕊️ Chiến dịch 500 ngày đêm' },
     { id: 'cau-1', label: 'Câu 1' },
     { id: 'cau-2', label: 'Câu 2' },
     { id: 'cau-3', label: 'Câu 3' },
@@ -94,6 +101,26 @@ export default function StickyNav({
             <Search className="w-3.5 h-3.5 text-stone-500" />
             <span className="hidden md:inline">Tìm</span>
           </button>
+
+          {/* Font Family Toggle */}
+          {onToggleFontStyle && (
+            <button
+              type="button"
+              onClick={onToggleFontStyle}
+              title={
+                fontStyle === 'sans'
+                  ? 'Đang dùng phông Be Vietnam Pro (Chuẩn hiện đại). Bấm để đổi sang Noto Serif (Chuẩn báo chí)'
+                  : 'Đang dùng phông Noto Serif (Chuẩn báo chí). Bấm để đổi sang Be Vietnam Pro (Chuẩn hiện đại)'
+              }
+              aria-label="Đổi kiểu phông chữ"
+              className="px-2 py-1.5 rounded-lg border border-stone-200 bg-white hover:bg-stone-100 text-stone-700 text-xs font-semibold flex items-center gap-1 transition-colors cursor-pointer"
+            >
+              <Type className="w-3.5 h-3.5 text-stone-600" />
+              <span className="hidden md:inline font-mono text-[11px]">
+                {fontStyle === 'sans' ? 'Phông Sans' : 'Phông Serif'}
+              </span>
+            </button>
+          )}
 
           <div className="flex items-center bg-stone-100 rounded-lg p-0.5 border border-stone-200">
             <button

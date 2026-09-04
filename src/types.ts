@@ -1,8 +1,18 @@
+export interface QuestionImage {
+  id: string;
+  src: string;
+  alt: string;
+  caption: string;
+  historicalNote?: string;
+  credit?: string;
+}
+
 export interface QuestionItem {
   id: string;
   number: number;
   title: string;
   summary: string;
+  images?: QuestionImage[];
   sections: {
     heading?: string;
     subheading?: string;
@@ -18,6 +28,18 @@ export interface QuestionItem {
     };
     bullets?: string[];
   }[];
+}
+
+export interface DevelopmentStage {
+  id: string;
+  period: string;
+  yearRange: string;
+  title: string;
+  badge: string;
+  organizationName: string;
+  keyEvents: string[];
+  historicalSignificance: string;
+  quoteOrAchievement?: string;
 }
 
 export interface PodcastGuest {
